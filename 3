@@ -1,0 +1,38 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+bool isfind[100] = { false };
+int l[100] = { 0 };
+int m[20][20] = { 0 };
+int maxlen = INT_MAX;
+int range = 0;
+void dfs(int n, int len) {
+    if (isfind[n]) {
+        maxlen = min(maxlen, len - l[n]);
+        return;
+    }
+    isfind[n] = 1;
+    for (int i = 0; i < 20; i++) {
+        if (m[n][i]) {
+            if (!isfind[i]) {
+                l[i] = len+m[n][i];
+            }
+            dfs(i, len + m[n][i]);
+        }
+    }
+    isfind[n] = 0;
+    return;
+}
+int main() {
+    int n, k;
+    cin >> n >> k;
+    while (k--) {
+        int t1, t2;
+        int len;
+        cin >> t1 >> t2 >> len;
+        m[t1][t2] = len;
+        m[t2][t1] = len;
+    }
+    dfs(0, 0);
+    cout << maxlen;
+}
